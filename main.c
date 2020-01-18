@@ -115,7 +115,7 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
     x2 = poz2[0] -'A';
     y2 = poz2[1] - '0' -1;
 
-    printf("x1-%i y1-%i x2-%i y2-%2\n", x1, y1, x2, y2);
+    printf("x1-%i y1-%i x2-%i y2-2\n", x1, y1, x2, y2);
 
     pole pole1 = plansza[x1][y1];
     pole pole2 = plansza[x2][y2];
@@ -141,23 +141,23 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
         if(y1 == y2){
             if(x2 > x1)
                 for(int i = x2-1; i > x1; i--){
-                    if(plansza[i][y1].typ != puste) return "zly ruch wieza e2";
+                    if(plansza[i][y1].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
             else
                 for(int i = x2+1; i < x1; i++){
-                    if(plansza[i][y1].typ != puste) return "zly ruch wieza e3";
+                    if(plansza[i][y1].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
         }else if(x1 == x2){
             if(y2 > y1)
                 for(int i = y2-1; i > y1; i--){
-                    if(plansza[x1][i].typ != puste) return "zly ruch wieza e4";
+                    if(plansza[x1][i].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
             else
                 for(int i = y2+1; i < y1; i++){
-                    if(plansza[x1][i].typ != puste) return "zly ruch wieza e5";
+                    if(plansza[x1][i].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
         }else{
-            return "zly ruch wieza e1";
+            return "zly ruch wieza (wieza sie tak nie porusza)";
 
         }
         break;
@@ -165,6 +165,20 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
         if(! (((y2 == y1+2 || y2 == y1-2) && (x2 == x1-1 || x2 == x1+1)) ||
               ((x2 == x1+2 || x2 == x1-2) && (y2 == y1-1 || y2 == y1+1))) )
            return "zly ruch skoczkiem";
+        break;
+    case(goniec):
+        if(abs(y1 - y2) != abs(x1 - x2))
+            return "zly ruch goncem";
+        if(x1>x2 && y1>y2)
+            for(int i=1; i<(y1-y2-1); i++){
+                if(plansza[x1+1][y1+1].typ != puste)
+                    return "zly ruch goncem";
+            }
+
+        break;
+    case(krol):
+        if(!(abs(x1 - x2) <= 1 && abs(y1 -y2) <= 1))
+            return "zly ruch krolem";
         break;
     }
 
@@ -197,6 +211,7 @@ int main()
         if(blad == 0){
             /*if(tura == 0) tura=1;
             else          tura=0;*/
+
             zmienPozycje(plansza, poz1, poz2);
         }else{
             printf( kolorCzerwony "Blad - %s %s->%s\n" kolorBialy , blad, poz1, poz2);
