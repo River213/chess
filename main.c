@@ -169,11 +169,69 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
         if(abs(y1 - y2) != abs(x1 - x2))
             return "zly ruch goncem";
         if(x1>x2 && y1>y2)
-            for(int i=1; i<(y1-y2-1); i++){
-                if(plansza[x1+1][y1+1].typ != puste)
-                    return "zly ruch goncem";
+            for(int i=1; i<(y1-y2); i++){
+                if(plansza[x1 - i][y1 - i].typ != puste)
+                    return "zly ruch goncem er-1";
+            }
+        else if(x1<x2 && y1>y2)
+            for(int i=1; i<(y1-y2); i++){
+                if(plansza[x1 + i][y1 - i].typ != puste)
+                    return "zly ruch goncem er-2";
+            }
+        else if(x1>x2 && y1<y2)
+            for(int i=1; i<(y2-y1); i++){
+                if(plansza[x1 - i][y1 + i].typ != puste)
+                    return "zly ruch goncem er-3";
+            }
+        else
+            for(int i=1; i<(y2-y1); i++){
+                if(plansza[x1 + i][y1 + i].typ != puste)
+                    return "zly ruch goncem er-4";
             }
 
+        break;
+    case(hetman):
+        if(abs(y1 - y2) == abs(x1 - x2)){
+            if(x1>x2 && y1>y2)
+                for(int i=1; i<(y1-y2); i++){
+                    if(plansza[x1 - i][y1 - i].typ != puste)
+                        return "zly ruch hetmanem er-1";
+                }
+            else if(x1<x2 && y1>y2)
+                for(int i=1; i<(y1-y2); i++){
+                    if(plansza[x1 + i][y1 - i].typ != puste)
+                        return "zly ruch hetmanem er-2";
+                }
+            else if(x1>x2 && y1<y2)
+                for(int i=1; i<(y2-y1); i++){
+                    if(plansza[x1 - i][y1 + i].typ != puste)
+                        return "zly ruch hetmanem er-3";
+                }
+            else
+                for(int i=1; i<(y2-y1); i++){
+                    if(plansza[x1 + i][y1 + i].typ != puste)
+                        return "zly ruch hetmanem er-4";
+                }
+        }else if(y1 == y2){
+            if(x2 > x1)
+                for(int i = x2-1; i > x1; i--){
+                    if(plansza[i][y1].typ != puste) return "zly ruch hetmanem";
+                }
+            else
+                for(int i = x2+1; i < x1; i++){
+                    if(plansza[i][y1].typ != puste) return "zly ruch wieza hetmanem)";
+                }
+        }else if(x1 == x2){
+            if(y2 > y1)
+                for(int i = y2-1; i > y1; i--){
+                    if(plansza[x1][i].typ != puste) return "zly ruch wieza hetmanem";
+                }
+            else
+                for(int i = y2+1; i < y1; i++){
+                    if(plansza[x1][i].typ != puste) return "zly ruch wieza hetmanem";
+                }
+        }else
+            return "hetamn sie tak nie porusza";
         break;
     case(krol):
         if(!(abs(x1 - x2) <= 1 && abs(y1 -y2) <= 1))
