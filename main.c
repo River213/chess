@@ -1,9 +1,15 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-#define kolorBialy "\033[0m"
-#define kolorCzarnego "\033[40m"
-#define kolorBialego "\033[47m\033[30m"
-#define kolorCzerwony "\033[31m"
+#define kolorBialy      "\033[0m"
+#define kolorCzarnego   "\033[40m"
+#define kolorBialego    "\033[47m\033[30m"
+#define kolorCzerwony   "\033[31m"
+
+typedef enum{
+    t_bialy, t_czarny
+}czyjaTura;
 
 typedef enum{
     bialy,  ///na polu jest bialy pionek
@@ -93,7 +99,6 @@ void rysujPlansze(pole plansza[8][8]){
     printf("+----------------------------------------------+\n");
 }
 
-
 int zmienPozycje(pole plansza[8][8], char poz1[2], char poz2[2]){
     int x1, x2, y1, y2;
     x1 = poz1[0] -'A';
@@ -107,21 +112,27 @@ int zmienPozycje(pole plansza[8][8], char poz1[2], char poz2[2]){
     return 0;
 }
 
-char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
+char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], czyjaTura tura){
     int x1, x2, y1, y2;
     x1 = poz1[0] -'A';
     y1 = poz1[1] - '0' -1;
     x2 = poz2[0] -'A';
     y2 = poz2[1] - '0' -1;
 
-    printf("pozycje - x1-%i y1-%i || x2-%i y2-%i\n", x1, y1, x2, y2);
+    /*for(int y=0; y<8; y++){
+        for(int x=0; x<8; x++){
+            if(plansza[x][y].typ == czarny)
+        }
+    }*/
+
+    printf("pozycje - x1-%i y1-%i | x2-%i y2-%i\n", x1, y1, x2, y2);
 
     pole pole1 = plansza[x1][y1];
     pole pole2 = plansza[x2][y2];
 
     if(x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7 || y2 < 0 || x2 > 7 || y2 < 0 || y2 > 7)
         return "blad wprowadzenia";
-    if(  !((pole1.typ == bialy && tura == 0) || (pole1.typ == czarny && tura == 1))  )
+    if(  !((pole1.typ == bialy && tura == t_bialy) || (pole1.typ == czarny && tura == t_czarny))  )
         return "zle wybrany pionek";
     if(pole1.typ == pole2.typ)
         return "cel ustawiony na wlany pionek";
@@ -129,11 +140,11 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
     switch(pole1.pionek){
     case(pion):
         if((!( x1 == x2 && pole2.typ == puste && (
-        (((y2 == y1+1) || (y1 == 1 && y2 == 3 && plansza[x1][2].typ == puste && plansza[x1][3].typ == puste)) && tura == 1) ||
-        (((y2 == y1-1) || (y1 == 6 && y2 == 4 && plansza[x1][5].typ == puste && plansza[x1][4].typ == puste)) && tura == 0)) ))
+        (((y2 == y1+1) || (y1 == 1 && y2 == 3 && plansza[x1][2].typ == puste && plansza[x1][3].typ == puste)) && tura == t_czarny) ||
+        (((y2 == y1-1) || (y1 == 6 && y2 == 4 && plansza[x1][5].typ == puste && plansza[x1][4].typ == puste)) && tura == t_bialy)) ))
         &&
-        (! ((y2 == y1-1 && (x2 == x1+1 || x2 == x1-1) && pole2.typ == czarny && tura == 0) ||
-            (y2 == y1+1 && (x2 == x1+1 || x2 == x1-1) && pole2.typ == bialy  && tura == 1))))
+        (! ((y2 == y1-1 && (x2 == x1+1 || x2 == x1-1) && pole2.typ == czarny && tura == t_bialy) ||
+            (y2 == y1+1 && (x2 == x1+1 || x2 == x1-1) && pole2.typ == bialy  && tura == t_czarny))))
             return "zly ruch pionem";
         break;
     case(wieza):
@@ -242,45 +253,58 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], int tura){
     return 0;
 }
 
+char *sprawdzMat(pole plansza[8][8], int x, int y, czyjaTura tura){
+    
+    if(tura == t_bialy){
+        
+
+    }else{
+
+    }
+}
+
+
 int main()
 {
     pole plansza[8][8];
     char poz1[3], poz2[3];
-    int tura;///0-bialy 1-czarny
+    czyjaTura tura;
 
     char *blad;
 
     restart:
-
     
-    tura = 0;
-
+    tura = bialy;
 
     uzupelnijPlansze(plansza);
 
     while(1){
 
         rysujPlansze(plansza);
-        if(tura == 0){
+        if(tura == bialy){
             printf("Ruch bialego: ");
         }
-        else if(tura == 1){
+        else if(tura == czarny){
             printf("Ruch czarnego: ");
         }
+
+
         scanf("%s", poz1);
-        if(strcmp(poz1, "exit") == 0) return 0;
-        if(strcmp(poz1, "restart") == 0){
-            goto restart;
-        }
+
+        if(strcmp(poz1, "exit") == 0)       return 0;
+        if(strcmp(poz1, "restart") == 0)    goto restart;
+
         scanf("%s", poz2);
+
+
         blad = sprawdzRuch(plansza, poz1, poz2, tura);
         if(blad == 0){
-            if(tura == 0) tura=1;
-            else          tura=0;
+            if(tura == t_bialy) tura = t_czarny;
+            else                tura = t_bialy;
 
             zmienPozycje(plansza, poz1, poz2);
         }else{
-            printf( kolorCzerwony "Blad - %s %s->%s\n" kolorBialy , blad, poz1, poz2);
+            printf( kolorCzerwony "Error - %s %s->%s\n" kolorBialy , blad, poz1, poz2);
         }
     }
 
