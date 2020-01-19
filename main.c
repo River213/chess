@@ -267,7 +267,7 @@ char *sprawdzMat(pole plansza[8][8], int x, int y, czyjaTura tura){
 int main()
 {
     pole plansza[8][8];
-    char poz1[3], poz2[3];
+    char poz1[10], poz2[3];
     czyjaTura tura;
 
     char *blad;
@@ -278,6 +278,9 @@ int main()
 
     uzupelnijPlansze(plansza);
 
+    system("clear");
+    system("clear");
+    
     while(1){
 
         rysujPlansze(plansza);
@@ -291,11 +294,13 @@ int main()
 
         scanf("%s", poz1);
 
-        if(strcmp(poz1, "exit") == 0)       return 0;
+        if(strcmp(poz1, "exit")    == 0)    return 0;
         if(strcmp(poz1, "restart") == 0)    goto restart;
 
         scanf("%s", poz2);
 
+        system("clear");
+        system("clear");
 
         blad = sprawdzRuch(plansza, poz1, poz2, tura);
         if(blad == 0){
@@ -304,7 +309,7 @@ int main()
 
             zmienPozycje(plansza, poz1, poz2);
         }else{
-            printf( kolorCzerwony "Error - %s %s->%s\n" kolorBialy , blad, poz1, poz2);
+            printf( kolorCzerwony "Error - %s %s %s\n" kolorBialy , blad, poz1, poz2);
         }
     }
 
