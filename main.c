@@ -26,6 +26,11 @@ typedef struct Pole{
     typPionka pionek;
 }pole;
 
+typedef struct Pozycja{
+    int x;
+    int y;
+}pozycja;
+
 char zwrocCharPola(pole pol){
     if(pol.typ == puste) return ' ';
 
@@ -99,38 +104,84 @@ void rysujPlansze(pole plansza[8][8]){
     printf("+----------------------------------------------+\n");
 }
 
-int zmienPozycje(pole plansza[8][8], char poz1[2], char poz2[2]){
-    int x1, x2, y1, y2;
-    x1 = poz1[0] -'A';
-    y1 = poz1[1] - '0' -1;
-    x2 = poz2[0] -'A';
-    y2 = poz2[1] - '0' -1;
+int zmienPozycje(pole plansza[8][8], pozycja poz1, pozycja poz2){
 
-    plansza[x2][y2] = plansza[x1][y1];
-    plansza[x1][y1].typ = puste;
+    plansza[poz2.x][poz2.y] = plansza[poz1.x][poz1.y];
+    plansza[poz1.x][poz1.y].typ = puste;
 
     return 0;
 }
 
-char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], czyjaTura tura){
-    int x1, x2, y1, y2;
-    x1 = poz1[0] -'A';
-    y1 = poz1[1] - '0' -1;
-    x2 = poz2[0] -'A';
-    y2 = poz2[1] - '0' -1;
+char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);
 
-    /*for(int y=0; y<8; y++){
+char *sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, pozycja pozycjaKrola, czyjaTura tura){
+
+    pole pol1_zap = plansza[poz1.x][poz1.y];
+    pole pol2_zap = plansza[poz2.x][poz2.y];
+
+    plansza[poz2.x][poz2.y] = plansza[poz1.x][poz1.y];
+    plansza[poz1.x][poz1.y].typ = puste;
+
+
+    pozycja poz_i;
+        
+    for(int y=0; y<8; y++){
         for(int x=0; x<8; x++){
-            if(plansza[x][y].typ == czarny)
+            poz_i.x = x; 
+            poz_i.y = y;
+
+            if(plansza[x][y].typ == czarny && tura == t_bialy){
+                
+                if(sprawdzRuch(plansza, poz_i, pozycjaKrola, czarny) != 0){
+
+
+                    plansza[poz1.x][poz1.y] = pol1_zap;
+                    plansza[poz2.x][poz2.y] = pol2_zap;
+                    return "nie mozasz sie ruszyc jest krol jest atakowany!";
+                }
+
+            }else if(plansza[x][y].typ == bialy && tura == t_czarny){
+
+                if(sprawdzRuch(plansza, poz_i, pozycjaKrola, bialy) != 0){
+
+
+                    plansza[poz1.x][poz1.y] = pol1_zap;
+                    plansza[poz2.x][poz2.y] = pol2_zap;
+                    return "nie mozasz sie ruszyc jest krol jest atakowany!";
+                }
+            }
         }
-    }*/
+    }
+    plansza[poz1.x][poz1.y] = pol1_zap;
+    plansza[poz2.x][poz2.y] = pol2_zap;
 
-    printf("pozycje - x1-%i y1-%i | x2-%i y2-%i\n", x1, y1, x2, y2);
+    return 0;
+}
 
-    pole pole1 = plansza[x1][y1];
-    pole pole2 = plansza[x2][y2];
 
-    if(x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7 || y2 < 0 || x2 > 7 || y2 < 0 || y2 > 7)
+char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura){
+
+    pozycja poz_Krola;
+
+    for(int y=0; y<8; y++){
+        for(int x=0; x<8; x++){
+            if(plansza[x][y].typ == krol && ((plansza[x][y].typ == czarny && tura == t_czarny) || (plansza[x][y].typ == bialy && tura == t_bialy))){
+                poz_Krola.x = x;
+                poz_Krola.y = y;
+                if(sprawdzSzach(plansza, poz1, poz2, poz_Krola, tura) != 0){
+                    return 0;
+                }
+            }
+
+        }
+    }
+
+    printf("pozycje - poz1.x-%i poz1.y-%i | poz2.x-%i poz2.y-%i\n", poz1.x, poz1.y, poz2.x, poz2.y);
+
+    pole pole1 = plansza[poz1.x][poz1.y];
+    pole pole2 = plansza[poz2.x][poz2.y];
+
+    if(poz1.x < 0 || poz1.x > 7 || poz1.y < 0 || poz1.y > 7 || poz2.y < 0 || poz2.x > 7 || poz2.y < 0 || poz2.y > 7)
         return "blad wprowadzenia";
     if(  !((pole1.typ == bialy && tura == t_bialy) || (pole1.typ == czarny && tura == t_czarny))  )
         return "zle wybrany pionek";
@@ -139,32 +190,32 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], czyjaTura tura
 
     switch(pole1.pionek){
     case(pion):
-        if((!( x1 == x2 && pole2.typ == puste && (
-        (((y2 == y1+1) || (y1 == 1 && y2 == 3 && plansza[x1][2].typ == puste && plansza[x1][3].typ == puste)) && tura == t_czarny) ||
-        (((y2 == y1-1) || (y1 == 6 && y2 == 4 && plansza[x1][5].typ == puste && plansza[x1][4].typ == puste)) && tura == t_bialy)) ))
+        if((!( poz1.x == poz2.x && pole2.typ == puste && (
+        (((poz2.y == poz1.y+1) || (poz1.y == 1 && poz2.y == 3 && plansza[poz1.x][2].typ == puste && plansza[poz1.x][3].typ == puste)) && tura == t_czarny) ||
+        (((poz2.y == poz1.y-1) || (poz1.y == 6 && poz2.y == 4 && plansza[poz1.x][5].typ == puste && plansza[poz1.x][4].typ == puste)) && tura == t_bialy)) ))
         &&
-        (! ((y2 == y1-1 && (x2 == x1+1 || x2 == x1-1) && pole2.typ == czarny && tura == t_bialy) ||
-            (y2 == y1+1 && (x2 == x1+1 || x2 == x1-1) && pole2.typ == bialy  && tura == t_czarny))))
+        (! ((poz2.y == poz1.y-1 && (poz2.x == poz1.x+1 || poz2.x == poz1.x-1) && pole2.typ == czarny && tura == t_bialy) ||
+            (poz2.y == poz1.y+1 && (poz2.x == poz1.x+1 || poz2.x == poz1.x-1) && pole2.typ == bialy  && tura == t_czarny))))
             return "zly ruch pionem";
         break;
     case(wieza):
-        if(y1 == y2){
-            if(x2 > x1)
-                for(int i = x2-1; i > x1; i--){
-                    if(plansza[i][y1].typ != puste) return "zly ruch wieza (po drodze jest pion)";
+        if(poz1.y == poz2.y){
+            if(poz2.x > poz1.x)
+                for(int i = poz2.x-1; i > poz1.x; i--){
+                    if(plansza[i][poz1.y].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
             else
-                for(int i = x2+1; i < x1; i++){
-                    if(plansza[i][y1].typ != puste) return "zly ruch wieza (po drodze jest pion)";
+                for(int i = poz2.x+1; i < poz1.x; i++){
+                    if(plansza[i][poz1.y].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
-        }else if(x1 == x2){
-            if(y2 > y1)
-                for(int i = y2-1; i > y1; i--){
-                    if(plansza[x1][i].typ != puste) return "zly ruch wieza (po drodze jest pion)";
+        }else if(poz1.x == poz2.x){
+            if(poz2.y > poz1.y)
+                for(int i = poz2.y-1; i > poz1.y; i--){
+                    if(plansza[poz1.x][i].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
             else
-                for(int i = y2+1; i < y1; i++){
-                    if(plansza[x1][i].typ != puste) return "zly ruch wieza (po drodze jest pion)";
+                for(int i = poz2.y+1; i < poz1.y; i++){
+                    if(plansza[poz1.x][i].typ != puste) return "zly ruch wieza (po drodze jest pion)";
                 }
         }else{
             return "zly ruch wieza (wieza sie tak nie porusza)";
@@ -172,80 +223,80 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], czyjaTura tura
         }
         break;
     case(skoczek):
-        if(! (((y2 == y1+2 || y2 == y1-2) && (x2 == x1-1 || x2 == x1+1)) ||
-              ((x2 == x1+2 || x2 == x1-2) && (y2 == y1-1 || y2 == y1+1))) )
+        if(! (((poz2.y == poz1.y+2 || poz2.y == poz1.y-2) && (poz2.x == poz1.x-1 || poz2.x == poz1.x+1)) ||
+              ((poz2.x == poz1.x+2 || poz2.x == poz1.x-2) && (poz2.y == poz1.y-1 || poz2.y == poz1.y+1))) )
            return "zly ruch skoczkiem";
         break;
     case(goniec):
-        if(abs(y1 - y2) != abs(x1 - x2))
+        if(abs(poz1.y - poz2.y) != abs(poz1.x - poz2.x))
             return "zly ruch goncem";
-        if(x1>x2 && y1>y2)
-            for(int i=1; i<(y1-y2); i++){
-                if(plansza[x1 - i][y1 - i].typ != puste)
+        if(poz1.x>poz2.x && poz1.y>poz2.y)
+            for(int i=1; i<(poz1.y-poz2.y); i++){
+                if(plansza[poz1.x - i][poz1.y - i].typ != puste)
                     return "zly ruch goncem er-1";
             }
-        else if(x1<x2 && y1>y2)
-            for(int i=1; i<(y1-y2); i++){
-                if(plansza[x1 + i][y1 - i].typ != puste)
+        else if(poz1.x<poz2.x && poz1.y>poz2.y)
+            for(int i=1; i<(poz1.y-poz2.y); i++){
+                if(plansza[poz1.x + i][poz1.y - i].typ != puste)
                     return "zly ruch goncem er-2";
             }
-        else if(x1>x2 && y1<y2)
-            for(int i=1; i<(y2-y1); i++){
-                if(plansza[x1 - i][y1 + i].typ != puste)
+        else if(poz1.x>poz2.x && poz1.y<poz2.y)
+            for(int i=1; i<(poz2.y-poz1.y); i++){
+                if(plansza[poz1.x - i][poz1.y + i].typ != puste)
                     return "zly ruch goncem er-3";
             }
         else
-            for(int i=1; i<(y2-y1); i++){
-                if(plansza[x1 + i][y1 + i].typ != puste)
+            for(int i=1; i<(poz2.y-poz1.y); i++){
+                if(plansza[poz1.x + i][poz1.y + i].typ != puste)
                     return "zly ruch goncem er-4";
             }
 
         break;
     case(hetman):
-        if(abs(y1 - y2) == abs(x1 - x2)){
-            if(x1>x2 && y1>y2)
-                for(int i=1; i<(y1-y2); i++){
-                    if(plansza[x1 - i][y1 - i].typ != puste)
+        if(abs(poz1.y - poz2.y) == abs(poz1.x - poz2.x)){
+            if(poz1.x>poz2.x && poz1.y>poz2.y)
+                for(int i=1; i<(poz1.y-poz2.y); i++){
+                    if(plansza[poz1.x - i][poz1.y - i].typ != puste)
                         return "zly ruch hetmanem er-1";
                 }
-            else if(x1<x2 && y1>y2)
-                for(int i=1; i<(y1-y2); i++){
-                    if(plansza[x1 + i][y1 - i].typ != puste)
+            else if(poz1.x<poz2.x && poz1.y>poz2.y)
+                for(int i=1; i<(poz1.y-poz2.y); i++){
+                    if(plansza[poz1.x + i][poz1.y - i].typ != puste)
                         return "zly ruch hetmanem er-2";
                 }
-            else if(x1>x2 && y1<y2)
-                for(int i=1; i<(y2-y1); i++){
-                    if(plansza[x1 - i][y1 + i].typ != puste)
+            else if(poz1.x>poz2.x && poz1.y<poz2.y)
+                for(int i=1; i<(poz2.y-poz1.y); i++){
+                    if(plansza[poz1.x - i][poz1.y + i].typ != puste)
                         return "zly ruch hetmanem er-3";
                 }
             else
-                for(int i=1; i<(y2-y1); i++){
-                    if(plansza[x1 + i][y1 + i].typ != puste)
+                for(int i=1; i<(poz2.y-poz1.y); i++){
+                    if(plansza[poz1.x + i][poz1.y + i].typ != puste)
                         return "zly ruch hetmanem er-4";
                 }
-        }else if(y1 == y2){
-            if(x2 > x1)
-                for(int i = x2-1; i > x1; i--){
-                    if(plansza[i][y1].typ != puste) return "zly ruch hetmanem";
+        }else if(poz1.y == poz2.y){
+            if(poz2.x > poz1.x)
+                for(int i = poz2.x-1; i > poz1.x; i--){
+                    if(plansza[i][poz1.y].typ != puste) return "zly ruch hetmanem";
                 }
             else
-                for(int i = x2+1; i < x1; i++){
-                    if(plansza[i][y1].typ != puste) return "zly ruch wieza hetmanem)";
+                for(int i = poz2.x+1; i < poz1.x; i++){
+                    if(plansza[i][poz1.y].typ != puste) return "zly ruch wieza hetmanem)";
                 }
-        }else if(x1 == x2){
-            if(y2 > y1)
-                for(int i = y2-1; i > y1; i--){
-                    if(plansza[x1][i].typ != puste) return "zly ruch wieza hetmanem";
+        }else if(poz1.x == poz2.x){
+            if(poz2.y > poz1.y)
+                for(int i = poz2.y-1; i > poz1.y; i--){
+                    if(plansza[poz1.x][i].typ != puste) return "zly ruch wieza hetmanem";
                 }
             else
-                for(int i = y2+1; i < y1; i++){
-                    if(plansza[x1][i].typ != puste) return "zly ruch wieza hetmanem";
+                for(int i = poz2.y+1; i < poz1.y; i++){
+                    if(plansza[poz1.x][i].typ != puste) return "zly ruch wieza hetmanem";
                 }
         }else
             return "hetamn sie tak nie porusza";
         break;
     case(krol):
-        if(!(abs(x1 - x2) <= 1 && abs(y1 -y2) <= 1))
+        if(!(abs(poz1.x - poz2.x) <= 1 && abs(poz1.y -poz2.y) <= 1))
             return "zly ruch krolem";
         break;
     }
@@ -253,21 +304,12 @@ char *sprawdzRuch(pole plansza[8][8], char poz1[2], char poz2[2], czyjaTura tura
     return 0;
 }
 
-char *sprawdzMat(pole plansza[8][8], int x, int y, czyjaTura tura){
-    
-    if(tura == t_bialy){
-        
-
-    }else{
-
-    }
-}
-
 
 int main()
 {
     pole plansza[8][8];
-    char poz1[10], poz2[3];
+    char kom1[10], kom2[10];
+    pozycja poz1, poz2;
     czyjaTura tura;
 
     char *blad;
@@ -292,12 +334,21 @@ int main()
         }
 
 
-        scanf("%s", poz1);
+        scanf("%s", kom1);
 
-        if(strcmp(poz1, "exit")    == 0)    return 0;
-        if(strcmp(poz1, "restart") == 0)    goto restart;
+        if(strcmp(kom1, "EXIT")    == 0)    return 0;
+        if(strcmp(kom1, "RESTART") == 0)    goto restart;
 
-        scanf("%s", poz2);
+        scanf("%s", kom2);
+
+        if(strcmp(kom2, "EXIT")    == 0)    return 0;
+        if(strcmp(kom2, "RESTART") == 0)    goto restart;
+
+        poz1.x = kom1[0] -'A';
+        poz1.y = kom1[1] - '0' -1;
+        poz2.x = kom2[0] -'A';
+        poz2.y = kom2[1] - '0' -1;
+
 
         system("clear");
         system("clear");
@@ -309,7 +360,7 @@ int main()
 
             zmienPozycje(plansza, poz1, poz2);
         }else{
-            printf( kolorCzerwony "Error - %s %s %s\n" kolorBialy , blad, poz1, poz2);
+            printf( kolorCzerwony "Error - %s %s %s\n" kolorBialy , blad, kom1, kom2);
         }
     }
 
