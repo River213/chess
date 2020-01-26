@@ -37,10 +37,10 @@ void uzupelnijPlansze(pole plansza[8][8]);
 
 void rysujPlansze(pole plansza[8][8]);
 
-int zmienPozycje(pole plansza[8][8], pozycja poz1, pozycja poz2);
+void zmienPozycje(pole plansza[8][8], pozycja poz1, pozycja poz2);
 
 char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);
 
 char *sprawdzBicie(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);
 
-char *sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);
+int sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);

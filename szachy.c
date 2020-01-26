@@ -73,21 +73,19 @@ void rysujPlansze(pole plansza[8][8]){
     printf("+----------------------------------------------+\n");
 }
 
-int zmienPozycje(pole plansza[8][8], pozycja poz1, pozycja poz2){
+void zmienPozycje(pole plansza[8][8], pozycja poz1, pozycja poz2){
 
     plansza[poz2.x][poz2.y] = plansza[poz1.x][poz1.y];
     plansza[poz1.x][poz1.y].typ = puste;
-
-    return 0;
 }
 
 char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura){
 
     if(sprawdzSzach(plansza, poz1, poz2, tura) != 0)
         return "jest szach";
-    
-    if(sprawdzBicie(plansza,  poz1, poz2, tura) != 0)
-        return "jest bicie";
+    char *blad = sprawdzBicie(plansza,  poz1, poz2, tura);
+    if(blad != 0)
+        return blad;
     
     return 0;
 }
@@ -222,7 +220,7 @@ char *sprawdzBicie(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tur
     return 0;
 }
 
-char *sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura){
+int sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura){
 
     pole pol1_zap = plansza[poz1.x][poz1.y];
     pole pol2_zap = plansza[poz2.x][poz2.y];
@@ -257,7 +255,7 @@ char *sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tur
 
                     plansza[poz1.x][poz1.y] = pol1_zap;
                     plansza[poz2.x][poz2.y] = pol2_zap;
-                    return "nie mozasz sie ruszyc jest krol jest atakowany!";
+                    return 1;
                 }
 
             }else if(plansza[x][y].typ == bialy && tura == t_czarny){
@@ -266,7 +264,7 @@ char *sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tur
                     
                     plansza[poz1.x][poz1.y] = pol1_zap;
                     plansza[poz2.x][poz2.y] = pol2_zap;
-                    return "nie mozasz sie ruszyc jest krol jest atakowany!";
+                    return 1;
                 }
             }
         }
