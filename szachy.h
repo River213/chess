@@ -44,3 +44,5 @@ char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura
 char *sprawdzBicie(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);
 
 int sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura);
+
+int sprawdzMat(pole plansza[8][8], czyjaTura tura);

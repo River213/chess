@@ -51,7 +51,7 @@ void uzupelnijPlansze(pole plansza[8][8]){
 void rysujPlansze(pole plansza[8][8]){
 
     printf("+----------------------------------------------+\n");
-    printf("|     A    B    C    D    E    F    G    H     |\n");
+    printf("|     a    b    c    d    e    f    g    h     |\n");
     printf("|   ----------------------------------------   |\n");
     for(int y=0; y<8; y++){
         printf("| %i ", y+1);
@@ -69,7 +69,7 @@ void rysujPlansze(pole plansza[8][8]){
         printf("|   ----------------------------------------   |");
         printf("\n");
     }
-    printf("|     A    B    C    D    E    F    G    H     |\n");
+    printf("|     a    b    c    d    e    f    g    h     |\n");
     printf("+----------------------------------------------+\n");
 }
 
@@ -81,11 +81,13 @@ void zmienPozycje(pole plansza[8][8], pozycja poz1, pozycja poz2){
 
 char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura){
 
-    if(sprawdzSzach(plansza, poz1, poz2, tura) != 0)
-        return "jest szach";
     char *blad = sprawdzBicie(plansza,  poz1, poz2, tura);
     if(blad != 0)
         return blad;
+
+    if(sprawdzSzach(plansza, poz1, poz2, tura) != 0)
+        return "jest szach";
+    
     
     return 0;
 }
@@ -197,16 +199,16 @@ char *sprawdzBicie(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tur
                 }
             else
                 for(int i = poz2.x+1; i < poz1.x; i++){
-                    if(plansza[i][poz1.y].typ != puste) return "zly ruch wieza hetmanem)";
+                    if(plansza[i][poz1.y].typ != puste) return "zly ruch hetmanem)";
                 }
         }else if(poz1.x == poz2.x){
             if(poz2.y > poz1.y)
                 for(int i = poz2.y-1; i > poz1.y; i--){
-                    if(plansza[poz1.x][i].typ != puste) return "zly ruch wieza hetmanem";
+                    if(plansza[poz1.x][i].typ != puste) return "zly ruch hetmanem";
                 }
             else
                 for(int i = poz2.y+1; i < poz1.y; i++){
-                    if(plansza[poz1.x][i].typ != puste) return "zly ruch wieza hetmanem";
+                    if(plansza[poz1.x][i].typ != puste) return "zly ruch hetmanem";
                 }
         }else
             return "hetamn sie tak nie porusza";
@@ -273,4 +275,68 @@ int sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura)
     plansza[poz2.x][poz2.y] = pol2_zap;
 
     return 0;
+}
+
+pozycja stwozPozycje(int x, int y){
+    pozycja p;
+    p.x = x;
+    p.y = y;
+    return p;
+}
+
+int sprawdzMat(pole plansza[8][8], czyjaTura tura){
+    pozycja poz1;
+
+    if(tura == t_bialy){
+        for(int y=0; y<8; y++){
+            for(int x=0; x<8; x++){
+                if(plansza[x][y].typ == bialy) {
+                    poz1.x = x; 
+                    poz1.y = y;
+                    
+                    switch(plansza[x][y].pionek){
+                    case(pion):
+                        if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y-1), tura) == 0)        return 0;
+
+                        if(plansza[x-1][y-1].typ == czarny)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+                        
+                        if(plansza[x+1][y-1].typ == czarny)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        
+                        if(y == 7 && plansza[x][6].typ == puste &&  plansza[x][5].typ == puste)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, 5), tura) == 0)      return 0;
+                    }
+                }
+            }
+        }
+    }else{
+        for(int y=0; y<8; y++){
+            for(int x=0; x<8; x++){
+                if(plansza[x][y].typ == bialy) {
+                    poz1.x = x; 
+                    poz1.y = y;
+                    
+                    switch(plansza[x][y].pionek){
+                    case(pion):
+                        if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y+1), tura) == 0)        return 0;
+
+                        if(plansza[x-1][y-1].typ == czarny)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+                        
+                        if(plansza[x+1][y-1].typ == czarny)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+                        
+                        if(y == 1 && plansza[x][2].typ == puste &&  plansza[x][3].typ == puste)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, 3), tura) == 0)      return 0;
+                        
+                    }
+                }
+            }
+        }
+
+    
+
+    }
+    return 1;
 }

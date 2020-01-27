@@ -4,9 +4,8 @@ int menu(){
     char kom  = '0';
     
     while(kom != '3'){
-        system("clear");
-        system("clear");
-                                                 
+
+        clear();      
 
         printf("  ____    _____     _       ____   _   _  __   __\n");
         printf(" / ___|  |__  /    / \\     / ___| | | | | \\ \\ / /\n");
@@ -16,14 +15,13 @@ int menu(){
         printf("1.                   Graj          \n");
         printf("2.                 Jak Grac        \n");
         printf("3.                   Wyjdz         \n");
-        printf("numer opcji - ");
+        printf("numer opcji -");
+        printf(" ");
         scanf("%c", &kom);
+
         if(kom == '1'){
 
             if(gra() == 1) return 0;
-
-            system("clear");
-            system("clear");
 
         }else if(kom == '2'){
 
@@ -36,8 +34,7 @@ int menu(){
 
 void jakGrac(){
 
-    system("clear");
-    system("clear");                                          
+    clear();                                    
 
     printf("  ____    _____     _       ____   _   _  __   __\n");
     printf(" / ___|  |__  /    / \\     / ___| | | | | \\ \\ / /\n");
@@ -45,11 +42,11 @@ void jakGrac(){
     printf("  ___) |  / /_   / ___ \\  | |___  |  _  |   | |  \n");
     printf(" |____/  /____| /_/   \\_\\  \\____| |_| |_|   |_|  \n\n\n");
 
-    printf(" Aby poruszyc pionkiem trzeba wpisac jego pozycje oraz pozycje na ktora ma sie ruszyc np. \"D7 D5\"\n");
+    printf(" Aby poruszyc pionkiem trzeba wpisac jego pozycje oraz pozycje na ktora ma sie ruszyc np. \"d7 d5\"\n");
     printf(" Dodatkowe komendy:         \n");
-    printf(" -\"RESTART\" resetuje gre  \n");
-    printf(" -\"MENU\" wraca do menu    \n");
-    printf(" -\"EXIT\" wylacza gre      \n");
+    printf(" -\"restart\" resetuje gre  \n");
+    printf(" -\"menu\" wraca do menu    \n");
+    printf(" -\"exit\" wylacza gre      \n");
     printf("\n");
     printf("Kliknij dowolny klawisz zaby wrocic do menu");
     getchar();
@@ -72,10 +69,17 @@ int gra(){
 
     uzupelnijPlansze(plansza);
 
-    system("clear");
-    system("clear");
+    clear();
     
     while(1){
+
+        if(sprawdzMat(plansza, tura) != 0){
+            printf( kolorCzerwony "SZACH MAT\n" kolorBialy);
+            rysujPlansze(plansza);
+            getchar();
+            getchar();
+            return 0;
+        }
 
         rysujPlansze(plansza);
         if(tura == bialy){
@@ -85,27 +89,28 @@ int gra(){
             printf("Ruch czarnego: ");
         }
 
+        
+
 
         scanf("%s", kom1);
 
-        if(strcmp(kom1, "EXIT")    == 0)    return 1;
-        if(strcmp(kom1, "RESTART") == 0)    goto restart;
-        if(strcmp(kom1, "MENU") == 0)       return 0;
+        if(strcmp(kom1, "exit")    == 0)    return 1;
+        if(strcmp(kom1, "restart") == 0)    goto restart;
+        if(strcmp(kom1, "menu") == 0)       return 0;
 
         scanf("%s", kom2);
 
-        if(strcmp(kom2, "EXIT")    == 0)    return 1;
-        if(strcmp(kom2, "RESTART") == 0)    goto restart;
-        if(strcmp(kom2, "MENU") == 0)       return 0;
+        if(strcmp(kom2, "exit")    == 0)    return 1;
+        if(strcmp(kom2, "restart") == 0)    goto restart;
+        if(strcmp(kom2, "menu") == 0)       return 0;
 
-        poz1.x = kom1[0] - 'A';
+        poz1.x = kom1[0] - 'a';
         poz1.y = kom1[1] - '0' -1;
-        poz2.x = kom2[0] - 'A';
+        poz2.x = kom2[0] - 'a';
         poz2.y = kom2[1] - '0' -1;
 
 
-        system("clear");
-        system("clear");
+        clear();
 
         blad = sprawdzRuch(plansza, poz1, poz2, tura);
         if(blad == 0){
@@ -114,8 +119,9 @@ int gra(){
 
             zmienPozycje(plansza, poz1, poz2);
         }else{
-            printf( kolorCzerwony "%s %s %s\n" kolorBialy , blad, kom1, kom2);
+            printf( kolorCzerwony "%s \"%s %s\"\n" kolorBialy , blad, kom1, kom2);
         }
+
     }
 
     return 0;
