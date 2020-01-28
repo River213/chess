@@ -85,10 +85,10 @@ int gra(){
         }
 
         rysujPlansze(plansza);
-        if(tura == bialy){
+        if(tura == t_bialy){
             printf("Ruch bialego: ");
         }
-        else if(tura == czarny){
+        else if(tura == t_czarny){
             printf("Ruch czarnego: ");
         }
 

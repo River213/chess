@@ -1,5 +1,6 @@
-#include "szachy.c"
-#include "menu.c"
+#include <stdlib.h>
+#include <stdio.h>
+#include "menu.h"
 
 int main()
 {

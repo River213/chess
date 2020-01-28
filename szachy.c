@@ -11,6 +11,8 @@ char zwrocCharPola(pole pol){
     case hetman:    return 'H';
     case krol:      return 'K';
     }
+
+    return ' ';
 }
 
 void uzupelnijPlansze(pole plansza[8][8]){
