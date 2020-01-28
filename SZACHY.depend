@@ -2845,6 +2845,23 @@
 
 1559742361 /usr/include/gtk-3.0/gtk/gtk-autocleanups.h
 
-1578914602 source:/home/pakiet/C/SZACHY/main.c
+1580026329 source:/home/pakiet/C/SZACHY/main.c
+	"szachy.c"
+	"menu.c"
+
+1580181124 /home/pakiet/C/SZACHY/szachy.c
+	"szachy.h"
+
+1580178987 /home/pakiet/C/SZACHY/szachy.h
 	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1580181757 /home/pakiet/C/SZACHY/menu.c
+	"menu.h"
+
+1580046283 /home/pakiet/C/SZACHY/menu.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
 

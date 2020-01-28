@@ -306,6 +306,107 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
                         
                         if(y == 7 && plansza[x][6].typ == puste &&  plansza[x][5].typ == puste)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x, 5), tura) == 0)      return 0;
+                        break;
+
+                    case(skoczek):
+                        if(x-2 >= 0 && y-1 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-2, y-1), tura) == 0)  return 0;
+
+                        if(x-1 >= 0 && y-2 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-2), tura) == 0)  return 0;
+
+                        if(x+1 <= 7 && y-2 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-2), tura) == 0)  return 0;
+
+                        if(x+2 <= 7 && y-1 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+2, y-1), tura) == 0)  return 0;
+
+                        if(x+2 <= 7 && y+1 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+2, y+1), tura) == 0)  return 0;
+
+                        if(x+1 <= 7 && y+2 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+2), tura) == 0)  return 0;
+
+                        if(x-1 >= 0 && y+2 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+2), tura) == 0)  return 0;
+
+                        if(x-2 >= 0 && y+1 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-2, y+1), tura) == 0)  return 0;
+                        break;
+                    
+                    case(wieza):
+
+                        for(int xt=x+1; xt<8 && plansza[xt][y].typ != bialy && plansza[xt-1][y].typ != czarny; xt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int xt=x-1; xt>=0 && plansza[xt][y].typ != bialy && plansza[xt-1][y].typ != czarny; xt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int yt=y+1; yt<8 && plansza[x][yt].typ != bialy && plansza[x][yt-1].typ != czarny; yt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)  return 0;
+
+                        for(int yt=y-1; yt>=0 && plansza[x][yt].typ != bialy && plansza[x][yt+1].typ != czarny; yt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)  return 0;
+                        break;
+
+                    case(goniec):
+                        for(int i=1; x+i<8 && y+i<8 && plansza[x+i][y+i].typ != bialy && plansza[x+i-1][y+i-1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y-i>=0 && plansza[x-i][y-i].typ != bialy && plansza[x-i+1][y-i+1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y+i<8 && plansza[x-i][y+i].typ != bialy && plansza[x-i+1][y+i-1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x+i<8 && y-i>=0 && plansza[x+i][y-i].typ != bialy && plansza[x+i-1][y-i+1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        break;
+
+                    case(hetman):
+                        for(int xt=x+1; xt<8 && plansza[xt][y].typ != bialy && plansza[xt-1][y].typ != czarny; xt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int xt=x-1; xt>=0 && plansza[xt][y].typ != bialy && plansza[xt-1][y].typ != czarny; xt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int yt=y+1; yt<8 && plansza[x][yt].typ != bialy && plansza[x][yt-1].typ != czarny; yt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)  return 0;
+
+                        for(int yt=y-1; yt>=0 && plansza[x][yt].typ != bialy && plansza[x][yt+1].typ != czarny; yt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)   return 0;
+
+                        for(int i=1; x+i<8 && y+i<8 && plansza[x+i][y+i].typ != bialy && plansza[x+i-1][y+i-1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y-i>=0 && plansza[x-i][y-i].typ != bialy && plansza[x-i+1][y-i+1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y+i<8 && plansza[x-i][y+i].typ != bialy && plansza[x-i+1][y+i-1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x+i<8 && y-i>=0 && plansza[x+i][y-i].typ != bialy && plansza[x+i-1][y-i+1].typ != czarny; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        break;
+
+                    case(krol):
+                        if(x-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y), tura) == 0)  return 0;
+                        if(y-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y-1), tura) == 0)  return 0;
+                        if(x+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y), tura) == 0)  return 0;
+                        if(y+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y+1), tura) == 0)  return 0;
+                        if(x+1<8 && y+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+                        if(x+1<8 && y-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        if(x-1>=0 && y+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+                        if(x-1>=0 && y-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+                        break;
                     }
                 }
             }
@@ -329,7 +430,109 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
                         
                         if(y == 1 && plansza[x][2].typ == puste &&  plansza[x][3].typ == puste)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x, 3), tura) == 0)      return 0;
+                        break;
                         
+                    case(skoczek):
+                        if(x-2 >= 0 && y-1 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-2, y-1), tura) == 0)  return 0;
+
+                        if(x-1 >= 0 && y-2 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-2), tura) == 0)  return 0;
+
+                        if(x+1 <= 7 && y-2 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-2), tura) == 0)  return 0;
+
+                        if(x+2 <= 7 && y-1 >= 0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+2, y-1), tura) == 0)  return 0;
+
+                        if(x+2 <= 7 && y+1 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+2, y+1), tura) == 0)  return 0;
+
+                        if(x+1 <= 7 && y+2 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+2), tura) == 0)  return 0;
+
+                        if(x-1 >= 0 && y+2 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+2), tura) == 0)  return 0;
+
+                        if(x-2 >= 0 && y+1 <= 7)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-2, y+1), tura) == 0)  return 0;
+                        break;
+
+                    case(wieza):
+
+                        for(int xt=x+1; xt<8 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int xt=x-1; xt>=0 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt--) 
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int yt=y+1; yt<8 && plansza[x][yt].typ != czarny && plansza[x][yt-1].typ != bialy; yt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)  return 0;
+
+                        for(int yt=y-1; yt>=0 && plansza[x][yt].typ != czarny && plansza[x][yt+1].typ != bialy; yt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)  return 0;
+                        break;
+
+                    case(goniec):
+                        for(int i=1; x+i<8 && y+i<8 && plansza[x+i][y+i].typ != czarny && plansza[x+i-1][y+i-1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y-i>=0 && plansza[x-i][y-i].typ != czarny && plansza[x-i+1][y-i+1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y+i<8 && plansza[x-i][y+i].typ != czarny && plansza[x-i+1][y+i-1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x+i<8 && y-i>=0 && plansza[x+i][y-i].typ != czarny && plansza[x+i-1][y-i+1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        break;
+
+                    case(hetman):
+                        for(int xt=x+1; xt<8 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int xt=x-1; xt>=0 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
+
+                        for(int yt=y+1; yt<8 && plansza[x][yt].typ != czarny && plansza[x][yt-1].typ != bialy; yt++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)  return 0;
+
+                        for(int yt=y-1; yt>=0 && plansza[x][yt].typ != czarny && plansza[x][yt+1].typ != bialy; yt--)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, yt), tura) == 0)   return 0;
+
+                        for(int i=1; x+i<8 && y+i<8 && plansza[x+i][y+i].typ != czarny && plansza[x+i-1][y+i-1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y-i>=0 && plansza[x-i][y-i].typ != czarny && plansza[x-i+1][y-i+1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+
+                        for(int i=1; x-i>=0 && y+i<8 && plansza[x-i][y+i].typ != czarny && plansza[x-i+1][y+i-1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+
+                        for(int i=1; x+i<8 && y-i>=0 && plansza[x+i][y-i].typ != czarny && plansza[x+i-1][y-i+1].typ != bialy; i++)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        break;
+
+                    case(krol):
+                        if(x-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y), tura) == 0)  return 0;
+                        if(y-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y-1), tura) == 0)  return 0;
+                        if(x+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y), tura) == 0)  return 0;
+                        if(y+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y+1), tura) == 0)  return 0;
+                        if(x+1<8 && y+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
+                        if(x+1<8 && y-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
+                        if(x-1>=0 && y+1<8)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
+                        if(x-1>=0 && y-1>=0)
+                            if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
+                        break;
+                        
+
                     }
                 }
             }

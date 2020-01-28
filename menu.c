@@ -74,8 +74,11 @@ int gra(){
     while(1){
 
         if(sprawdzMat(plansza, tura) != 0){
-            printf( kolorCzerwony "SZACH MAT\n" kolorBialy);
+            printf( kolorCzerwony "SZACH MAT - ");
+            if(tura == t_bialy) printf("gracz czarny wygrywa!\n" kolorBialy);
+            else                printf("gracz bialy wygrywa!\n"  kolorBialy);
             rysujPlansze(plansza);
+            printf("kliknij dowolny klawisz aby przejsc do menu");
             getchar();
             getchar();
             return 0;
