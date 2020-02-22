@@ -416,7 +416,7 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
     }else{
         for(int y=0; y<8; y++){
             for(int x=0; x<8; x++){
-                if(plansza[x][y].typ == bialy) {
+                if(plansza[x][y].typ == czarny) {
                     poz1.x = x; 
                     poz1.y = y;
                     
