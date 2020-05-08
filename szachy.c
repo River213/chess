@@ -89,8 +89,8 @@ char *sprawdzRuch(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura
 
     if(sprawdzSzach(plansza, poz1, poz2, tura) != 0)
         return "jest szach";
-    
-    
+
+
     return 0;
 }
 
@@ -247,14 +247,14 @@ int sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura)
     }
 
     pozycja poz_i;
-        
+
     for(int y=0; y<8; y++){
         for(int x=0; x<8; x++){
-            poz_i.x = x; 
+            poz_i.x = x;
             poz_i.y = y;
 
             if(plansza[x][y].typ == czarny && tura == t_bialy){
-                
+
                 if(sprawdzBicie(plansza, poz_i, poz_Krola, czarny) == 0){
 
                     plansza[poz1.x][poz1.y] = pol1_zap;
@@ -265,7 +265,7 @@ int sprawdzSzach(pole plansza[8][8], pozycja poz1, pozycja poz2, czyjaTura tura)
             }else if(plansza[x][y].typ == bialy && tura == t_czarny){
 
                 if(sprawdzBicie(plansza, poz_i, poz_Krola, bialy) == 0){
-                    
+
                     plansza[poz1.x][poz1.y] = pol1_zap;
                     plansza[poz2.x][poz2.y] = pol2_zap;
                     return 1;
@@ -293,19 +293,19 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
         for(int y=0; y<8; y++){
             for(int x=0; x<8; x++){
                 if(plansza[x][y].typ == bialy) {
-                    poz1.x = x; 
+                    poz1.x = x;
                     poz1.y = y;
-                    
+
                     switch(plansza[x][y].pionek){
                     case(pion):
                         if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y-1), tura) == 0)        return 0;
 
                         if(plansza[x-1][y-1].typ == czarny)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
-                        
+
                         if(plansza[x+1][y-1].typ == czarny)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y-1), tura) == 0)  return 0;
-                        
+
                         if(y == 7 && plansza[x][6].typ == puste &&  plansza[x][5].typ == puste)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x, 5), tura) == 0)      return 0;
                         break;
@@ -335,7 +335,7 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
                         if(x-2 >= 0 && y+1 <= 7)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x-2, y+1), tura) == 0)  return 0;
                         break;
-                    
+
                     case(wieza):
 
                         for(int xt=x+1; xt<8 && plansza[xt][y].typ != bialy && plansza[xt-1][y].typ != czarny; xt++)
@@ -417,23 +417,23 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
         for(int y=0; y<8; y++){
             for(int x=0; x<8; x++){
                 if(plansza[x][y].typ == czarny) {
-                    poz1.x = x; 
+                    poz1.x = x;
                     poz1.y = y;
-                    
+
                     switch(plansza[x][y].pionek){
                     case(pion):
                         if(sprawdzSzach(plansza, poz1, stwozPozycje(x, y+1), tura) == 0)        return 0;
 
                         if(plansza[x-1][y-1].typ == czarny)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y+1), tura) == 0)  return 0;
-                        
+
                         if(plansza[x+1][y-1].typ == czarny)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x+1, y+1), tura) == 0)  return 0;
-                        
+
                         if(y == 1 && plansza[x][2].typ == puste &&  plansza[x][3].typ == puste)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x, 3), tura) == 0)      return 0;
                         break;
-                        
+
                     case(skoczek):
                         if(x-2 >= 0 && y-1 >= 0)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x-2, y-1), tura) == 0)  return 0;
@@ -465,7 +465,7 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
                         for(int xt=x+1; xt<8 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt++)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
 
-                        for(int xt=x-1; xt>=0 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt--) 
+                        for(int xt=x-1; xt>=0 && plansza[xt][y].typ != czarny && plansza[xt-1][y].typ != bialy; xt--)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(xt, y), tura) == 0)  return 0;
 
                         for(int yt=y+1; yt<8 && plansza[x][yt].typ != czarny && plansza[x][yt-1].typ != bialy; yt++)
@@ -533,15 +533,10 @@ int sprawdzMat(pole plansza[8][8], czyjaTura tura){
                         if(x-1>=0 && y-1>=0)
                             if(sprawdzSzach(plansza, poz1, stwozPozycje(x-1, y-1), tura) == 0)  return 0;
                         break;
-                        
-
                     }
                 }
             }
         }
-
-    
-
     }
     return 1;
 }

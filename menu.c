@@ -2,11 +2,10 @@
 
 int menu(){
     char kom  = '0';
-    
+
     while(kom != '3'){
 
-        clear();      
-
+        clear();
         printf("  ____    _____     _       ____   _   _  __   __\n");
         printf(" / ___|  |__  /    / \\     / ___| | | | | \\ \\ / /\n");
         printf(" \\___ \\    / /    / _ \\   | |     | |_| |  \\ V / \n");
@@ -26,7 +25,7 @@ int menu(){
         }else if(kom == '2'){
 
             jakGrac();
-            
+
         }
     }
     return 0;
@@ -34,24 +33,21 @@ int menu(){
 
 void jakGrac(){
 
-    clear();                                    
+    clear();
 
     printf("  ____    _____     _       ____   _   _  __   __\n");
     printf(" / ___|  |__  /    / \\     / ___| | | | | \\ \\ / /\n");
     printf(" \\___ \\    / /    / _ \\   | |     | |_| |  \\ V / \n");
     printf("  ___) |  / /_   / ___ \\  | |___  |  _  |   | |  \n");
     printf(" |____/  /____| /_/   \\_\\  \\____| |_| |_|   |_|  \n\n\n");
-
     printf(" Aby poruszyc pionkiem trzeba wpisac jego pozycje oraz pozycje na ktora ma sie ruszyc np. \"d7 d5\"\n");
     printf(" Dodatkowe komendy:         \n");
-    printf(" -\"restart\" resetuje gre  \n");
     printf(" -\"menu\" wraca do menu    \n");
     printf(" -\"exit\" wylacza gre      \n");
     printf("\n");
     printf("Kliknij dowolny klawisz zaby wrocic do menu");
     getchar();
     getchar();
-
 }
 
 int gra(){
@@ -60,17 +56,13 @@ int gra(){
     char kom1[10] = "", kom2[10] = "";
     pozycja poz1, poz2;
     czyjaTura tura;
-
     char *blad;
-
     restart:
-    
     tura = bialy;
 
     uzupelnijPlansze(plansza);
-
     clear();
-    
+
     while(1){
 
         if(sprawdzMat(plansza, tura) != 0){
@@ -83,7 +75,6 @@ int gra(){
             getchar();
             return 0;
         }
-
         rysujPlansze(plansza);
         if(tura == t_bialy){
             printf("Ruch bialego: ");
@@ -92,26 +83,20 @@ int gra(){
             printf("Ruch czarnego: ");
         }
 
-        
-
-
         scanf("%s", kom1);
 
         if(strcmp(kom1, "exit")    == 0)    return 1;
-        if(strcmp(kom1, "restart") == 0)    goto restart;
         if(strcmp(kom1, "menu") == 0)       return 0;
 
         scanf("%s", kom2);
 
         if(strcmp(kom2, "exit")    == 0)    return 1;
-        if(strcmp(kom2, "restart") == 0)    goto restart;
         if(strcmp(kom2, "menu") == 0)       return 0;
 
         poz1.x = kom1[0] - 'a';
         poz1.y = kom1[1] - '0' -1;
         poz2.x = kom2[0] - 'a';
         poz2.y = kom2[1] - '0' -1;
-
 
         clear();
 
@@ -124,9 +109,7 @@ int gra(){
         }else{
             printf( kolorCzerwony "%s \"%s %s\"\n" kolorBialy , blad, kom1, kom2);
         }
-
     }
-
     return 0;
 }
 

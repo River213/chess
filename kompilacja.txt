@@ -1,1 +1,0 @@
-gcc -std=c11 -Wall -Wextra -Werror main.c menu.c szachy.c -o szachy -lm
